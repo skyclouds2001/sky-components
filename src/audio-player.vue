@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 
-defineOptions({
-  name: 'AudioPlayer',
-  inheritAttrs: false,
-})
-
 const props = withDefaults(
   defineProps<{
     source: string
@@ -21,8 +16,6 @@ const props = withDefaults(
     gradient: 'linear',
   }
 )
-
-defineExpose()
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 
@@ -108,6 +101,16 @@ const transformColor = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D
 
   return color
 }
+
+defineOptions({
+  name: 'AudioPlayer',
+  inheritAttrs: false,
+})
+
+defineExpose({
+  canvas,
+  audio,
+})
 </script>
 
 <template>
@@ -117,7 +120,7 @@ const transformColor = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D
   </div>
 </template>
 
-<style module>
+<style module lang="scss">
 .container,
 .canvas,
 .audio {
