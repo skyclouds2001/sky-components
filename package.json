@@ -67,6 +67,7 @@
     "preinstall": "only-allow pnpm"
   },
   "dependencies": {
+    "element-plus": "2.3.14",
     "vue": "^3.3.4"
   },
   "devDependencies": {
