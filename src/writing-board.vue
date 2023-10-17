@@ -10,7 +10,7 @@ const props = withDefaults(
   {
     width: 300,
     height: 150,
-    capturePointer?: boolean
+    capturePointer: true,
   }
 )
 
@@ -46,31 +46,43 @@ onUnmounted(() => {
   rect = null
 })
 
-const handlePointerDown = (e: PointerEvent): void => {
-  canvas.value?.setPointerCapture(e.pointerId)
+const handlePointerDown = (e: PointerEvent) => {
+  props.capturePointer && canvas.value?.setPointerCapture(e.pointerId)
 }
 
-const handlePointUp = (e: PointerEvent): void => {
-  canvas.value?.releasePointerCapture(e.pointerId)
+const handlePointUp = (e: PointerEvent) => {
+  props.capturePointer && canvas.value?.releasePointerCapture(e.pointerId)
 }
 
-const handleMouseDown = (e: MouseEvent): void => {
+const handleMouseDown = (e: MouseEvent) => {
   active = true
 
   ctx?.moveTo(e.clientX, e.clientY)
 }
 
-const handleMouseMove = (e: MouseEvent): void => {
+const handleMouseMove = (e: MouseEvent) => {
   if (!active) return
 
   ctx?.lineTo(e.clientX - (rect?.x ?? 0), e.clientY - (rect?.y ?? 0))
   ctx?.stroke()
 }
 
-const handleMouseUp = (): void => {
+const handleMouseUp = () => {
   active = false
 
   ctx?.stroke()
+}
+
+const generateDataURL = (type?: string, encoderOptions?: number) => {
+  return canvas.value?.toDataURL(type, encoderOptions) ?? null
+}
+
+const generateBlob = (callback: (blob: Blob | null) => void, type?: string, quality?: number) => {
+  return canvas.value?.toBlob(callback, type, quality)
+}
+
+const generateStream = (frameRequestRate?: number) => {
+  return canvas.value?.captureStream(frameRequestRate)
 }
 
 defineOptions({
@@ -80,6 +92,9 @@ defineOptions({
 
 defineExpose({
   canvas,
+  generateDataURL,
+  generateBlob,
+  generateStream,
 })
 </script>
 
