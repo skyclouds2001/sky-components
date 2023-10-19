@@ -1,5 +1,7 @@
 export { default as AudioPlayer } from './audio-player.vue'
 
+export { default as ControllableComponent } from './controllable-component.vue'
+
 export { default as FsTreeSelect } from './fs-tree-select.vue'
 
 export { default as LocalFontSelect } from './local-font-select.vue'

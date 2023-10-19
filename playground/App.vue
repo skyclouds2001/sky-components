@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { WritingBoard } from '@'
+import { ControllableComponent, WritingBoard } from '@'
 </script>
 
 <template>
   <div style="margin: 25px 0">
     <writing-board />
+  </div>
+  <div style="margin: 25px 0">
+    <controllable-component />
   </div>
 </template>
 
