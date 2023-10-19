@@ -6,11 +6,13 @@ const props = withDefaults(
     width?: number
     height?: number
     capturePointer?: boolean
+    listenResize?: boolean
   }>(),
   {
     width: 300,
     height: 150,
     capturePointer: true,
+    listenResize: true,
   }
 )
 
@@ -22,6 +24,14 @@ let rect: DOMRect | null = null
 
 let active = false
 
+const observer = new ResizeObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.target === canvas.value) {
+      rect = canvas.value?.getBoundingClientRect() as DOMRect
+    }
+  })
+})
+
 onMounted(() => {
   canvas.value?.addEventListener('mousedown', handleMouseDown)
   canvas.value?.addEventListener('mousemove', handleMouseMove)
@@ -32,6 +42,8 @@ onMounted(() => {
   ctx = canvas.value?.getContext('2d') as CanvasRenderingContext2D
 
   rect = canvas.value?.getBoundingClientRect() as DOMRect
+
+  props.listenResize && observer.observe(canvas.value as HTMLCanvasElement)
 })
 
 onUnmounted(() => {
@@ -44,6 +56,8 @@ onUnmounted(() => {
   ctx = null
 
   rect = null
+
+  props.listenResize && observer.unobserve(canvas.value as HTMLCanvasElement)
 })
 
 const handlePointerDown = (e: PointerEvent) => {
@@ -107,5 +121,7 @@ defineExpose({
   display: block;
   width: v-bind('props.width');
   height: v-bind('props.height');
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 </style>
