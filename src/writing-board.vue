@@ -71,7 +71,7 @@ const handlePointUp = (e: PointerEvent) => {
 const handleMouseDown = (e: MouseEvent) => {
   active = true
 
-  ctx?.moveTo(e.clientX, e.clientY)
+  ctx?.moveTo(e.clientX - (rect?.x ?? 0), e.clientY - (rect?.y ?? 0))
 }
 
 const handleMouseMove = (e: MouseEvent) => {
