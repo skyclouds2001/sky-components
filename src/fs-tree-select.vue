@@ -85,4 +85,4 @@ defineExpose({
   <el-tree-select v-model="file" value-key="name" @visible-change="loadFile" />
 </template>
 
-<style scoped lang="scss"></style>
+<style module lang="scss"></style>
