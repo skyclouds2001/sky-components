@@ -1,20 +1,17 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { ControllableComponent, WritingBoard } from '@'
+
+const mode = ref<'writing-board' | 'controllable-component'>('controllable-component')
 </script>
 
 <template>
-  <div style="margin: 25px 0">
+  <div v-if="mode === 'writing-board'" style="margin: 25px">
     <writing-board />
   </div>
-  <div style="margin: 25px 0">
+  <div v-if="mode === 'controllable-component'" style="margin: 25px">
     <controllable-component />
   </div>
 </template>
 
-<style lang="scss">
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-</style>
+<style scoped lang="scss"></style>
