@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, reactive, ref, useCssModule, type CSSProperties } from 'vue'
-
-const module = useCssModule()
+import { onMounted, onUnmounted, reactive, ref, type CSSProperties } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -26,10 +24,6 @@ const container = ref<HTMLDivElement | null>(null)
 
 const box = ref<HTMLDivElement | null>(null)
 
-const rotateIcon = ref<SVGSVGElement | null>(null)
-
-const classes = computed(() => [module.box, isDrag.value ? module.drag : ''])
-
 const styles = reactive({
   width: typeof props.initialWidth === 'number' ? `${props.initialWidth}px` : props.initialWidth,
   height: typeof props.initialHeight === 'number' ? `${props.initialHeight}px` : props.initialHeight,
@@ -42,16 +36,30 @@ const isDrag = ref(false)
 
 const isRotate = ref(false)
 
+const isScale = ref(0)
+
 let rect: DOMRect | null = null
 
+const sets: [width: number, height: number, top: number, left: number][] = [
+  [1, 1, -1, -1],
+  [1, 0, 0, -1],
+  [1, 2, 0, -1],
+  [0, 2, 0, 0],
+  [2, 2, 0, 0],
+  [2, 0, 0, 0],
+  [2, 1, -1, 0],
+  [0, 1, -1, 0],
+]
+
 const handleMouseDown = (e: MouseEvent) => {
-  switch (e.target) {
-    case box.value:
-      isDrag.value = true
-      break
-    case rotateIcon.value:
-      isRotate.value = true
-      break
+  if (e.target instanceof HTMLDivElement) {
+    isDrag.value = true
+  }
+  if (e.target instanceof SVGSVGElement) {
+    isRotate.value = true
+  }
+  if (e.target instanceof HTMLLIElement) {
+    isScale.value = Number.parseInt(e.target.dataset.id as string)
   }
 }
 
@@ -65,6 +73,13 @@ const handleMouseMove = (e: MouseEvent) => {
     const y = (rect as DOMRect).top + (rect as DOMRect).height / 2
     styles.rotate = `${(Math.atan2(y - e.clientY, x - e.clientX) * 180) / Math.PI - 90}deg`
   }
+  if (isScale.value !== 0) {
+    const [w, h, t, l] = sets[isScale.value - 1]
+    styles.width = `${Number.parseInt(styles.width) + e.movementX * w}px`
+    styles.height = `${Number.parseInt(styles.height) + e.movementX * h}px`
+    styles.top = `${Number.parseInt(styles.top) + e.movementX * t}px`
+    styles.left = `${Number.parseInt(styles.left) + e.movementX * l}px`
+  }
 }
 
 const handleMouseUp = () => {
@@ -75,6 +90,11 @@ const handleMouseUp = () => {
   }
   if (isRotate.value) {
     isRotate.value = false
+  }
+  if (isScale.value !== 0) {
+    isScale.value = 0
+
+    rect = (box.value as HTMLDivElement).getBoundingClientRect()
   }
 }
 
@@ -116,22 +136,29 @@ defineOptions({
 defineExpose({
   container,
   box,
+  isDrag,
+  isRotate,
+  isScale,
 })
 </script>
 
 <template>
   <div ref="container" :class="$style.container" :style="{ width: styles.width, height: styles.height }">
-    <div ref="box" :class="classes" :style="styles">
+    <div ref="box" :class="[$style.box, isDrag ? $style['is-drag'] : '']" :style="styles">
       <div>{{ slots.default?.() }}</div>
 
-      <svg ref="rotateIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" :class="$style['rotate-icon']">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" :class="$style['rotate-controller']">
         <path fill="currentColor" d="M784.512 230.272v-50.56a32 32 0 1 1 64 0v149.056a32 32 0 0 1-32 32H667.52a32 32 0 1 1 0-64h92.992A320 320 0 1 0 524.8 833.152a320 320 0 0 0 320-320h64a384 384 0 0 1-384 384 384 384 0 0 1-384-384 384 384 0 0 1 643.712-282.88z"></path>
       </svg>
+
+      <li v-for="(_, i) in Array(8)" :key="i + 1" :data-id="i + 1" :class="$style['scalable-controller']"></li>
     </div>
   </div>
 </template>
 
 <style module lang="scss">
+$scale-position: 1 0 0 nwse-resize, 2 0 50% ew-resize, 3 0 100% nesw-resize, 4 50% 100% ns-resize, 5 100% 100% nwse-resize, 6 100% 50% ew-resize, 7 100% 0 nesw-resize, 8 50% 0 ns-resize;
+
 .container {
   position: relative;
 }
@@ -146,15 +173,33 @@ defineExpose({
   user-select: none;
   border: 1px solid black;
 
-  &.drag {
+  &.is-drag {
     cursor: grabbing;
   }
 
-  .rotate-icon {
+  .rotate-controller {
     position: absolute;
-    top: -16px;
+    top: -20px;
     left: 50%;
     translate: -50% 0;
+  }
+
+  .scalable-controller {
+    display: inline-block;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 50%;
+    translate: -50% -50%;
+
+    @each $index, $left, $top, $cursor in $scale-position {
+      &:nth-of-type(#{$index}) {
+        top: $top;
+        left: $left;
+        cursor: $cursor;
+      }
+    }
   }
 }
 </style>
