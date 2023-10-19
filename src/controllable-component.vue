@@ -5,13 +5,13 @@ const module = useCssModule()
 
 const props = withDefaults(
   defineProps<{
-    width?: CSSProperties['width']
-    height?: CSSProperties['height']
+    initialWidth?: CSSProperties['width']
+    initialHeight?: CSSProperties['height']
     capturePointer?: boolean
   }>(),
   {
-    width: 100,
-    height: 100,
+    initialWidth: 100,
+    initialHeight: 100,
     capturePointer: true,
   }
 )
@@ -25,8 +25,8 @@ const controller = ref<HTMLDivElement | null>(null)
 const classes = computed(() => [module.box, isDrag.value ? module.drag : ''])
 
 const styles = reactive({
-  width: typeof props.width === 'number' ? `${props.width}px` : props.width,
-  height: typeof props.height === 'number' ? `${props.height}px` : props.height,
+  width: typeof props.initialWidth === 'number' ? `${props.initialWidth}px` : props.initialWidth,
+  height: typeof props.initialHeight === 'number' ? `${props.initialHeight}px` : props.initialHeight,
   left: '0',
   top: '0',
 })

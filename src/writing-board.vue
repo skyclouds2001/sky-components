@@ -3,8 +3,8 @@ import { onMounted, onUnmounted, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    width?: number
-    height?: number
+    width?: number | string
+    height?: number | string
     capturePointer?: boolean
     listenResize?: boolean
   }>(),
@@ -113,14 +113,21 @@ defineExpose({
 </script>
 
 <template>
-  <canvas ref="canvas" :class="$style.canvas" :width="props.width" :height="props.height"></canvas>
+  <canvas
+    ref="canvas"
+    :class="$style.canvas"
+    :width="props.width"
+    :height="props.height"
+    :style="{
+      width: typeof props.width === 'number' ? `${props.width}px` : props.width,
+      height: typeof props.height === 'number' ? `${props.height}px` : props.height,
+    }"
+  ></canvas>
 </template>
 
 <style module lang="scss">
 .canvas {
   display: block;
-  width: v-bind('props.width');
-  height: v-bind('props.height');
   border: 1px solid #ccc;
   border-radius: 10px;
 }
