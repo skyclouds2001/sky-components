@@ -5,6 +5,7 @@ import { ElSelect, ElOption } from 'element-plus'
 const props = withDefaults(
   defineProps<{
     // @ts-expect-error - Local Font Access API
+    // eslint-disable-next-line no-undef
     modelValue: FontData
     name?: string
     placeholder?: string
@@ -19,6 +20,7 @@ const props = withDefaults(
 
 const emits = defineEmits<{
   // @ts-expect-error - Local Font Access API
+  // eslint-disable-next-line no-undef
   'update:modelValue': [value: FontData]
 }>()
 
@@ -34,6 +36,7 @@ const font = computed({
 })
 
 // @ts-expect-error - Local Font Access API
+// eslint-disable-next-line no-undef
 const fonts = ref<FontData[]>([])
 
 const loadFont = async (): Promise<void> => {
