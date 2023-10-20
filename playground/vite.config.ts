@@ -16,10 +16,10 @@ export default defineConfig({
     checker({
       vueTsc: true,
       eslint: {
-        lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx,vue}"',
+        lintCommand: 'eslint "./../src/**/*.{js,jsx,ts,tsx,vue}"',
       },
       stylelint: {
-        lintCommand: 'stylelint ./src/**/*.{vue,css,sass,scss,less,styl,stylus}',
+        lintCommand: 'stylelint ./../src/**/*.{vue,css,sass,scss,less,styl,stylus}',
       },
     }),
   ],
