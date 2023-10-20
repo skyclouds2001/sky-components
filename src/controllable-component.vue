@@ -1,18 +1,31 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref, type CSSProperties } from 'vue'
+import { CSSValueToNumber as ctn, NumberToCSSValue as ntc } from './util'
 
 const props = withDefaults(
   defineProps<{
+    enableDrag?: boolean
+    enableRotate?: boolean
+    enableScale?: boolean
     initialWidth?: CSSProperties['width']
     initialHeight?: CSSProperties['height']
     initialRotate?: CSSProperties['rotate']
     capturePointer?: boolean
+    dragSpeed?: number
+    rotateSpeed?: number
+    scaleSpeed?: number
   }>(),
   {
+    enableDrag: true,
+    enableRotate: true,
+    enableScale: true,
     initialWidth: 100,
     initialHeight: 100,
     initialRotate: '0deg',
     capturePointer: true,
+    dragSpeed: 1,
+    rotateSpeed: 1,
+    scaleSpeed: 1,
   }
 )
 
@@ -25,8 +38,8 @@ const container = ref<HTMLDivElement | null>(null)
 const box = ref<HTMLDivElement | null>(null)
 
 const styles = reactive({
-  width: typeof props.initialWidth === 'number' ? `${props.initialWidth}px` : props.initialWidth,
-  height: typeof props.initialHeight === 'number' ? `${props.initialHeight}px` : props.initialHeight,
+  width: typeof props.initialWidth === 'number' ? ntc(props.initialWidth) : props.initialWidth,
+  height: typeof props.initialHeight === 'number' ? ntc(props.initialHeight) : props.initialHeight,
   left: '0px',
   top: '0px',
   rotate: props.initialRotate,
@@ -52,46 +65,52 @@ const sets: [width: number, height: number, top: number, left: number][] = [
 ]
 
 const handleMouseDown = (e: MouseEvent) => {
-  if (e.target instanceof HTMLDivElement) {
+  if (e.target instanceof HTMLDivElement && props.enableDrag) {
     isDrag.value = true
   }
-  if (e.target instanceof SVGSVGElement) {
+
+  if (e.target instanceof SVGSVGElement && props.enableRotate) {
     isRotate.value = true
   }
-  if (e.target instanceof HTMLLIElement) {
+
+  if (e.target instanceof HTMLLIElement && props.enableScale) {
     isScale.value = Number.parseInt(e.target.dataset.id as string)
   }
 }
 
 const handleMouseMove = (e: MouseEvent) => {
-  if (isDrag.value) {
-    styles.left = `${Number.parseInt(styles.left) + e.movementX}px`
-    styles.top = `${Number.parseInt(styles.top) + e.movementY}px`
+  if (isDrag.value && props.enableDrag) {
+    styles.left = ntc(ctn(styles.left) + e.movementX * props.dragSpeed)
+    styles.top = ntc(ctn(styles.top) + e.movementY * props.dragSpeed)
   }
-  if (isRotate.value) {
+
+  if (isRotate.value && props.enableRotate) {
     const x = (rect as DOMRect).left + (rect as DOMRect).width / 2
     const y = (rect as DOMRect).top + (rect as DOMRect).height / 2
-    styles.rotate = `${(Math.atan2(y - e.clientY, x - e.clientX) * 180) / Math.PI - 90}deg`
+    styles.rotate = ntc(((Math.atan2(y - e.clientY, x - e.clientX) * 180) / Math.PI - 90) * props.rotateSpeed, 'deg')
   }
-  if (isScale.value !== 0) {
+
+  if (isScale.value !== 0 && props.enableScale) {
     const [w, h, t, l] = sets[isScale.value - 1]
-    styles.width = `${Number.parseInt(styles.width) + e.movementX * w}px`
-    styles.height = `${Number.parseInt(styles.height) + e.movementX * h}px`
-    styles.top = `${Number.parseInt(styles.top) + e.movementX * t}px`
-    styles.left = `${Number.parseInt(styles.left) + e.movementX * l}px`
+    styles.width = ntc(ctn(styles.width) + e.movementX * w * props.scaleSpeed)
+    styles.height = ntc(ctn(styles.height) + e.movementX * h * props.scaleSpeed)
+    styles.top = ntc(ctn(styles.top) + e.movementX * t * props.scaleSpeed)
+    styles.left = ntc(ctn(styles.left) + e.movementX * l * props.scaleSpeed)
   }
 }
 
 const handleMouseUp = () => {
-  if (isDrag.value) {
+  if (isDrag.value && props.enableDrag) {
     isDrag.value = false
 
     rect = (box.value as HTMLDivElement).getBoundingClientRect()
   }
-  if (isRotate.value) {
+
+  if (isRotate.value && props.enableRotate) {
     isRotate.value = false
   }
-  if (isScale.value !== 0) {
+
+  if (isScale.value !== 0 && props.enableScale) {
     isScale.value = 0
 
     rect = (box.value as HTMLDivElement).getBoundingClientRect()
@@ -99,11 +118,11 @@ const handleMouseUp = () => {
 }
 
 const handlePointerDown = (e: PointerEvent) => {
-  container.value?.setPointerCapture(e.pointerId)
+  props.capturePointer && container.value?.setPointerCapture(e.pointerId)
 }
 
 const handlePointUp = (e: PointerEvent) => {
-  container.value?.releasePointerCapture(e.pointerId)
+  props.capturePointer && container.value?.releasePointerCapture(e.pointerId)
 }
 
 onMounted(() => {
@@ -111,8 +130,8 @@ onMounted(() => {
   container.value?.addEventListener('mousemove', handleMouseMove)
   container.value?.addEventListener('mouseup', handleMouseUp)
 
-  props.capturePointer && container.value?.addEventListener('pointerdown', handlePointerDown)
-  props.capturePointer && container.value?.addEventListener('pointerup', handlePointUp)
+  container.value?.addEventListener('pointerdown', handlePointerDown)
+  container.value?.addEventListener('pointerup', handlePointUp)
 
   rect = (box.value as HTMLDivElement).getBoundingClientRect()
 })
@@ -122,8 +141,8 @@ onUnmounted(() => {
   container.value?.removeEventListener('mousemove', handleMouseMove)
   container.value?.removeEventListener('mouseup', handleMouseUp)
 
-  props.capturePointer && container.value?.removeEventListener('pointerdown', handlePointerDown)
-  props.capturePointer && container.value?.removeEventListener('pointerup', handlePointUp)
+  container.value?.removeEventListener('pointerdown', handlePointerDown)
+  container.value?.removeEventListener('pointerup', handlePointUp)
 
   rect = null
 })
@@ -144,7 +163,7 @@ defineExpose({
 
 <template>
   <div ref="container" :class="$style.container" :style="{ width: styles.width, height: styles.height }">
-    <div ref="box" :class="[$style.box, isDrag ? $style['is-drag'] : '']" :style="styles">
+    <div ref="box" v-bind="$attrs" :class="[$style.box]" :style="styles">
       <div>{{ slots.default?.() }}</div>
 
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" :class="$style['rotate-controller']">
@@ -173,10 +192,6 @@ $scale-position: 1 0 0 nwse-resize, 2 0 50% ew-resize, 3 0 100% nesw-resize, 4 5
   user-select: none;
   border: 1px solid black;
 
-  &.is-drag {
-    cursor: grabbing;
-  }
-
   .rotate-controller {
     position: absolute;
     top: -20px;
@@ -185,8 +200,8 @@ $scale-position: 1 0 0 nwse-resize, 2 0 50% ew-resize, 3 0 100% nesw-resize, 4 5
   }
 
   .scalable-controller {
-    display: inline-block;
     position: absolute;
+    display: inline-block;
     width: 8px;
     height: 8px;
     background-color: #ccc;
