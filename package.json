@@ -1,11 +1,10 @@
 {
-  "name": "@sky-fly/sky-ui",
+  "name": "@sky-fly/sky-components",
   "version": "0.0.3",
   "license": "MIT",
-  "description": "A ui component library for vue",
+  "description": "A components library for vue",
   "keywords": [
-    "sky-fly",
-    "ui",
+    "vue",
     "component"
   ],
   "files": [
@@ -30,13 +29,13 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "homepage": "https://github.com/skyclouds2001/sky-ui#readme",
+  "homepage": "https://github.com/skyclouds2001/sky-components#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/skyclouds2001/sky-ui.git"
+    "url": "git+https://github.com/skyclouds2001/sky-components.git"
   },
   "bugs": {
-    "url": "https://github.com/skyclouds2001/sky-ui/issues",
+    "url": "https://github.com/skyclouds2001/sky-components/issues",
     "email": "skyclouds2001@163.com"
   },
   "author": {
