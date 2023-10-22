@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
+import { normalizeCSSValue } from './util'
 
 const props = withDefaults(
   defineProps<{
@@ -119,8 +120,8 @@ defineExpose({
     :width="props.width"
     :height="props.height"
     :style="{
-      width: typeof props.width === 'number' ? `${props.width}px` : props.width,
-      height: typeof props.height === 'number' ? `${props.height}px` : props.height,
+      width: normalizeCSSValue(props.width),
+      height: normalizeCSSValue(props.height),
     }"
   ></canvas>
 </template>

@@ -1,7 +1,3 @@
-export const CSSValueToNumber = (length: string): number => {
-  return Number.parseInt(length)
-}
-
-export const NumberToCSSValue = (number: number, unit = 'px'): string => {
-  return number.toString() + unit
+export const normalizeCSSValue = (value: number | string, unit = 'px'): string => {
+  return typeof value === 'number' ? value.toString() + unit : value
 }

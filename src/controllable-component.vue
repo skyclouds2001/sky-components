@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref, type CSSProperties } from 'vue'
-import { CSSValueToNumber as ctn, NumberToCSSValue as ntc } from './util'
+import { normalizeCSSValue } from './util'
 
 const props = withDefaults(
   defineProps<{
@@ -38,8 +38,8 @@ const container = ref<HTMLDivElement | null>(null)
 const box = ref<HTMLDivElement | null>(null)
 
 const styles = reactive({
-  width: typeof props.initialWidth === 'number' ? ntc(props.initialWidth) : props.initialWidth,
-  height: typeof props.initialHeight === 'number' ? ntc(props.initialHeight) : props.initialHeight,
+  width: normalizeCSSValue(props.initialWidth),
+  height: normalizeCSSValue(props.initialHeight),
   left: '0px',
   top: '0px',
   rotate: props.initialRotate,
@@ -80,22 +80,22 @@ const handleMouseDown = (e: MouseEvent) => {
 
 const handleMouseMove = (e: MouseEvent) => {
   if (isDrag.value && props.enableDrag) {
-    styles.left = ntc(ctn(styles.left) + e.movementX * props.dragSpeed)
-    styles.top = ntc(ctn(styles.top) + e.movementY * props.dragSpeed)
+    styles.left = normalizeCSSValue(Number.parseInt(styles.left) + e.movementX * props.dragSpeed)
+    styles.top = normalizeCSSValue(Number.parseInt(styles.top) + e.movementY * props.dragSpeed)
   }
 
   if (isRotate.value && props.enableRotate) {
     const x = (rect as DOMRect).left + (rect as DOMRect).width / 2
     const y = (rect as DOMRect).top + (rect as DOMRect).height / 2
-    styles.rotate = ntc(((Math.atan2(y - e.clientY, x - e.clientX) * 180) / Math.PI - 90) * props.rotateSpeed, 'deg')
+    styles.rotate = normalizeCSSValue(((Math.atan2(y - e.clientY, x - e.clientX) * 180) / Math.PI - 90) * props.rotateSpeed, 'deg')
   }
 
   if (isScale.value !== 0 && props.enableScale) {
     const [w, h, t, l] = sets[isScale.value - 1]
-    styles.width = ntc(ctn(styles.width) + e.movementX * w * props.scaleSpeed)
-    styles.height = ntc(ctn(styles.height) + e.movementX * h * props.scaleSpeed)
-    styles.top = ntc(ctn(styles.top) + e.movementX * t * props.scaleSpeed)
-    styles.left = ntc(ctn(styles.left) + e.movementX * l * props.scaleSpeed)
+    styles.width = normalizeCSSValue(Number.parseInt(styles.width) + e.movementX * w * props.scaleSpeed)
+    styles.height = normalizeCSSValue(Number.parseInt(styles.height) + e.movementX * h * props.scaleSpeed)
+    styles.top = normalizeCSSValue(Number.parseInt(styles.top) + e.movementX * t * props.scaleSpeed)
+    styles.left = normalizeCSSValue(Number.parseInt(styles.left) + e.movementX * l * props.scaleSpeed)
   }
 }
 
