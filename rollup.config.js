@@ -23,11 +23,12 @@ export default defineConfig({
       format: 'umd',
       globals: {
         vue: 'Vue',
+        'element-plus': 'ElementPlus',
       },
-      name: 'vui',
+      name: 'sky-components',
     },
   ],
-  external: ['vue'],
+  external: ['vue', 'element-plus'],
   plugins: [
     NodeResolve({
       browser: true,
