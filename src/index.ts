@@ -1,9 +1,9 @@
-export { default as AudioPlayer } from './audio-player.vue'
+export { default as AudioPlayer } from './audio-player'
 
-export { default as ControllableComponent } from './controllable-component.vue'
+export { default as ControllableComponent } from './controllable-component'
 
-export { default as FsTreeSelect } from './fs-tree-select.vue'
+export { default as FsTreeSelect } from './fs-tree-select'
 
-export { default as LocalFontSelect } from './local-font-select.vue'
+export { default as LocalFontSelect } from './local-font-select'
 
-export { default as WritingBoard } from './writing-board.vue'
+export { default as WritingBoard } from './writing-board'
