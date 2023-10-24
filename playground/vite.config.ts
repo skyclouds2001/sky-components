@@ -5,24 +5,24 @@ import checker from 'vite-plugin-checker'
 import path from 'node:path'
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@': path.resolve(process.cwd(), 'src'),
-    },
-  },
   plugins: [
     vue(),
     vueJsx(),
     checker({
       vueTsc: true,
       eslint: {
-        lintCommand: 'eslint "./../src/**/*.{js,jsx,ts,tsx,vue}"',
+        lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx,vue}"',
       },
       stylelint: {
-        lintCommand: 'stylelint ./../src/**/*.{vue,css,sass,scss,less,styl,stylus}',
+        lintCommand: 'stylelint "./src/**/*.{vue,css,scss}"',
       },
     }),
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
   css: {
     devSourcemap: true,
   },
