@@ -1,4 +1,4 @@
-# sky-admin
+# sky-components
 
 ## 0.0.0
 
