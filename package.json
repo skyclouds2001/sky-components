@@ -46,7 +46,7 @@
   "contributors": [
     "skyclouds2001"
   ],
-  "packageManager": "pnpm@8.4.0",
+  "packageManager": "pnpm@8.10.0",
   "engines": {
     "node": ">=18.13.0",
     "npm": ">=9.6.0",
@@ -110,7 +110,7 @@
     "markdownlint": "^0.31.1",
     "markdownlint-cli": "^0.37.0",
     "only-allow": "^1.2.1",
-    "pnpm": "8.4.0",
+    "pnpm": "8.10.0",
     "postcss": "^8.4.31",
     "postcss-html": "^1.5.0",
     "postcss-import": "^15.1.0",
