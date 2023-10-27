@@ -23,7 +23,7 @@ const file = ref<any>(null)
     <div>{{ file }}</div>
   </div>
   <div style="margin: 25px">
-    <audio-player source="/ls.m4a" />
+    <audio-player source="/media.m4a" />
   </div>
 </template>
 
