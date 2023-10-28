@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   element-plus:
     specifier: ^2.4.1
@@ -296,7 +300,7 @@ packages:
     dependencies:
       '@babel/core': 7.23.2
       '@babel/helper-annotate-as-pure': 7.22.5
-      '@babel/helper-environment-visitor': 7.22.5
+      '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-member-expression-to-functions': 7.23.0
       '@babel/helper-optimise-call-expression': 7.22.5
@@ -308,11 +312,6 @@ packages:
 
   /@babel/helper-environment-visitor@7.22.20:
     resolution: {integrity: sha512-zfedSIzFhat/gFhWfHtgWvlec0nqB9YEIVrpuwjruLlXfUSnA8cJB0miHKwqDnQ7d32aKo2xt88/xZptwxbfhA==}
-    engines: {node: '>=6.9.0'}
-    dev: true
-
-  /@babel/helper-environment-visitor@7.22.5:
-    resolution: {integrity: sha512-XGmhECfVA/5sAt+H+xpSg0mfrHq6FzNr9Oxh7PSEBBRUb/mL7Kz3NICXb194rCqAEdxkhPT1a88teizAFyvk8Q==}
     engines: {node: '>=6.9.0'}
     dev: true
 
@@ -544,7 +543,7 @@ packages:
     dependencies:
       '@babel/code-frame': 7.22.13
       '@babel/generator': 7.23.0
-      '@babel/helper-environment-visitor': 7.22.5
+      '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.5
@@ -827,6 +826,7 @@ packages:
   /@commitlint/config-validator@18.1.0:
     resolution: {integrity: sha512-kbHkIuItXn93o2NmTdwi5Mk1ujyuSIysRE/XHtrcps/27GuUKEIqBJp6TdJ4Sq+ze59RlzYSHMKuDKZbfg9+uQ==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dependencies:
       '@commitlint/types': 18.1.0
       ajv: 8.12.0
@@ -847,6 +847,7 @@ packages:
   /@commitlint/execute-rule@18.1.0:
     resolution: {integrity: sha512-w3Vt4K+O7+nSr9/gFSEfZ1exKUOPSlJaRpnk7Y+XowEhvwT7AIk1HNANH+gETf0zGZ020+hfiMW/Ome+SNCUsg==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dev: true
 
   /@commitlint/format@18.1.0:
@@ -923,6 +924,7 @@ packages:
   /@commitlint/resolve-extends@18.1.0:
     resolution: {integrity: sha512-3mZpzOEJkELt7BbaZp6+bofJyxViyObebagFn0A7IHaLARhPkWTivXdjvZHS12nAORftv88Yhbh8eCPKfSvB7g==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dependencies:
       '@commitlint/config-validator': 18.1.0
       '@commitlint/types': 18.1.0
@@ -2022,6 +2024,7 @@ packages:
 
   /@types/node@18.18.7:
     resolution: {integrity: sha512-bw+lEsxis6eqJYW8Ql6+yTqkE6RuFtsQPSe5JxXbqYRFQEER5aJA9a5UH9igqDWm3X4iLHIKOHlnAXLM4mi7uQ==}
+    requiresBuild: true
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -3298,6 +3301,7 @@ packages:
   /cosmiconfig-typescript-loader@5.0.0(@types/node@18.18.7)(cosmiconfig@8.2.0)(typescript@5.2.2):
     resolution: {integrity: sha512-+8cK7jRAReYkMwMiG+bxhcNKiHJDM6bR9FD/nGBXOWdMLuYawjF5cGrtLilJ+LGd3ZjCXnJjR5DkfWPoIVlqJA==}
     engines: {node: '>=v16'}
+    requiresBuild: true
     peerDependencies:
       '@types/node': '*'
       cosmiconfig: '>=8.2'
@@ -5783,6 +5787,7 @@ packages:
   /jiti@1.20.0:
     resolution: {integrity: sha512-3TV69ZbrvV6U5DfQimop50jE9Dl6J8O1ja1dvBbMba/sZ3YBEQqJ2VZRoQPVnhlzjNtU1vaXRZVrVjU4qtm8yA==}
     hasBin: true
+    requiresBuild: true
     dev: true
 
   /js-beautify@1.14.6:
@@ -6086,6 +6091,7 @@ packages:
 
   /lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
+    requiresBuild: true
     dev: true
 
   /lodash.kebabcase@4.1.1:
@@ -6106,6 +6112,7 @@ packages:
 
   /lodash.mergewith@4.6.2:
     resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
+    requiresBuild: true
     dev: true
 
   /lodash.pick@4.4.0:
