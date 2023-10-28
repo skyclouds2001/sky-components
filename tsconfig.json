@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "strict": true,
+
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "paths": {
+      "@": ["./src"],
+      "@/*": ["./src/*"]
+    },
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "types": ["vite/client"],
+
+    "newLine": "lf",
+    "noEmit": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "sourceMap": true,
+
+    "allowJs": false,
+
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"],
+    "target": "ESNext",
+    "useDefineForClassFields": false,
+
+    "composite": true,
+    "incremental": true,
+
+    "skipLibCheck": true
+  },
+  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx", "**/*.vue"],
+  "exclude": ["node_modules", "dist"]
+}
