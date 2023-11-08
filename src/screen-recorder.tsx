@@ -64,12 +64,20 @@ const ScreenRecorder = /* #__PURE__ */ defineComponent({
       type: Object as PropType<CSSProperties>,
       default: () => ({}),
     },
-    options: {
+    mediaOptions: {
       type: Object as PropType<DisplayMediaStreamOptions>,
       default: () => ({
         audio: true,
         video: true,
       }),
+    },
+    recorderOptions: {
+      type: Object as PropType<MediaRecorderOptions>,
+      default: () => ({}),
+    },
+    downloadOptions: {
+      type: [Object, Function] as PropType<Partial<Record<'filename' | 'filetype', string>> | ((data: Blob) => void)>,
+      default: () => ({}),
     },
     initOnClick: {
       type: Boolean,
@@ -78,6 +86,10 @@ const ScreenRecorder = /* #__PURE__ */ defineComponent({
     playOnInit: {
       type: Boolean,
       default: true,
+    },
+    thrownIfError: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: {
@@ -91,43 +103,166 @@ const ScreenRecorder = /* #__PURE__ */ defineComponent({
 
     const stream = shallowRef<MediaStream | null>(null)
 
+    const recorder = shallowRef<MediaRecorder | null>(null)
+
     const init = async (): Promise<void> => {
       if (video.value == null || stream.value != null) return
 
       try {
-        stream.value = await navigator.mediaDevices.getDisplayMedia(props.options)
+        stream.value = await navigator.mediaDevices.getDisplayMedia(props.mediaOptions)
 
         video.value.srcObject = stream.value
+
+        recorder.value = new MediaRecorder(stream.value, props.recorderOptions)
+
+        recorder.value.addEventListener(
+          'dataavailable',
+          (e) => {
+            if (typeof props.downloadOptions === 'function') {
+              props.downloadOptions(e.data)
+              return
+            }
+
+            const { filename = 'media', filetype = 'video/mp4' } = props.downloadOptions
+
+            const blob = new Blob([e.data], {
+              type: filetype,
+            })
+            const url = URL.createObjectURL(blob)
+
+            const a = document.createElement('a')
+            a.href = url
+            a.download = filename
+            a.target = '_blank'
+            a.style.display = 'none'
+            document.documentElement.appendChild(a)
+            a.click()
+            document.documentElement.removeChild(a)
+
+            URL.revokeObjectURL(url)
+          },
+          {
+            passive: true,
+          }
+        )
 
         if (props.playOnInit) {
           await play()
         }
       } catch (error) {
-        reportError(error)
+        if (props.thrownIfError) {
+          throw error
+        } else {
+          reportError(error)
+        }
       }
     }
 
     const close = (): void => {
       if (video.value == null || stream.value == null) return
 
-      pause()
       stream.value.getTracks().forEach((track) => {
         track.stop()
       })
       stream.value = null
+
       video.value.srcObject = null
+
+      recorder.value?.stop()
+      recorder.value = null
     }
 
     const play = async (): Promise<void> => {
       if (video.value == null || stream.value == null) return
 
-      await video.value.play()
+      try {
+        await video.value.play()
+        switch (recorder.value?.state) {
+          case 'inactive':
+            recorder.value?.start()
+            break
+          case 'paused':
+            recorder.value?.resume()
+            break
+        }
+      } catch (error) {
+        if (props.thrownIfError) {
+          throw error
+        } else {
+          reportError(error)
+        }
+      }
     }
 
     const pause = (): void => {
       if (video.value == null || stream.value == null) return
 
-      video.value.pause()
+      try {
+        video.value.pause()
+        recorder.value?.pause()
+      } catch (error) {
+        if (props.thrownIfError) {
+          throw error
+        } else {
+          reportError(error)
+        }
+      }
+    }
+
+    const enterFullscreen = async (): Promise<void> => {
+      if (video.value == null || stream.value == null || document.fullscreenElement === video.value) return
+
+      try {
+        await video.value.requestFullscreen()
+      } catch (error) {
+        if (props.thrownIfError) {
+          throw error
+        } else {
+          reportError(error)
+        }
+      }
+    }
+
+    const exitFullscreen = async (): Promise<void> => {
+      if (video.value == null || stream.value == null || document.fullscreenElement !== video.value) return
+
+      try {
+        await document.exitFullscreen()
+      } catch (error) {
+        if (props.thrownIfError) {
+          throw error
+        } else {
+          reportError(error)
+        }
+      }
+    }
+
+    const enterPictureInPicture = async (): Promise<void> => {
+      if (video.value == null || stream.value == null || document.pictureInPictureElement === video.value) return
+
+      try {
+        await video.value.requestPictureInPicture()
+      } catch (error) {
+        if (props.thrownIfError) {
+          throw error
+        } else {
+          reportError(error)
+        }
+      }
+    }
+
+    const exitPictureInPicture = async (): Promise<void> => {
+      if (video.value == null || stream.value == null || document.pictureInPictureElement !== video.value) return
+
+      try {
+        await document.exitPictureInPicture()
+      } catch (error) {
+        if (props.thrownIfError) {
+          throw error
+        } else {
+          reportError(error)
+        }
+      }
     }
 
     const handleClick = (): void => {
@@ -140,10 +275,15 @@ const ScreenRecorder = /* #__PURE__ */ defineComponent({
       isSupported,
       video,
       stream,
+      recorder,
       init,
       close,
       play,
       pause,
+      enterFullscreen,
+      exitFullscreen,
+      enterPictureInPicture,
+      exitPictureInPicture,
     })
 
     return () => (
