@@ -2,9 +2,10 @@
 import { ref } from 'vue'
 import { ControllableComponent, WritingBoard, LocalFontSelect, FsTreeSelect, AudioPlayer } from '@'
 
-const font = ref<any>(null)
+// @ts-expect-error - Local Font Access API
+const font = ref<FontData>(null)
 
-const file = ref<any>(null)
+const file = ref<FileSystemFileHandle | null>(null)
 </script>
 
 <template>
