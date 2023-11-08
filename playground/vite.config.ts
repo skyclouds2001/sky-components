@@ -11,16 +11,16 @@ export default defineConfig({
     checker({
       vueTsc: true,
       eslint: {
-        lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx,vue}"',
+        lintCommand: 'eslint "**/*.{js,jsx,ts,tsx,vue}"',
       },
       stylelint: {
-        lintCommand: 'stylelint "./src/**/*.{vue,css,scss}"',
+        lintCommand: 'stylelint "**/*.{vue,css,scss}"',
       },
     }),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, '..', 'src'),
     },
   },
   css: {
