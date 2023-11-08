@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { AudioPlayer, ControllableComponent, FsTreeSelect, LocalFontSelect, ScreenRecorder, WritingBoard } from '@'
 import { ref } from 'vue'
-import { ControllableComponent, WritingBoard, LocalFontSelect, FsTreeSelect, AudioPlayer } from '@'
 
 // @ts-expect-error - Local Font Access API
 const font = ref<FontData>(null)
@@ -9,6 +9,9 @@ const file = ref<FileSystemFileHandle | null>(null)
 </script>
 
 <template>
+  <div style="margin: 25px">
+    <screen-recorder />
+  </div>
   <div style="margin: 25px">
     <writing-board />
   </div>
