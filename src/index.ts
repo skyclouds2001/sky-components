@@ -6,4 +6,6 @@ export { default as FsTreeSelect } from './fs-tree-select'
 
 export { default as LocalFontSelect } from './local-font-select'
 
+export { default as ScreenRecorder } from './screen-recorder'
+
 export { default as WritingBoard } from './writing-board'
