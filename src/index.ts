@@ -1,5 +1,7 @@
 export { default as AudioPlayer } from './audio-player'
 
+export { default as CameraRecorder } from './camera-recorder'
+
 export { default as ControllableComponent } from './controllable-component'
 
 export { default as FsTreeSelect } from './fs-tree-select'
