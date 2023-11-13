@@ -1,6 +1,6 @@
 import { ElTreeSelect } from 'element-plus'
-import { computed, defineComponent, ref } from 'vue'
 import 'element-plus/es/components/tree-select/style/css'
+import { computed, defineComponent, ref, type PropType } from 'vue'
 
 type Data =
   | {
@@ -18,12 +18,12 @@ const FileSystemTreeSelect = /* #__PURE__ */ defineComponent({
   inheritAttrs: false,
   props: {
     modelValue: {
-      type: FileSystemFileHandle,
+      type: FileSystemFileHandle as PropType<FileSystemFileHandle | null>,
       required: true,
     },
   },
   emits: {
-    'update:modelValue': (handle: FileSystemFileHandle) => handle,
+    'update:modelValue': (handle: FileSystemFileHandle | null) => handle,
   },
   setup: (props, { emit, expose }) => {
     const isSupported = 'showDirectoryPicker' in window
