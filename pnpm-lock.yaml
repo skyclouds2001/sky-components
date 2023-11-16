@@ -725,7 +725,7 @@ packages:
     dependencies:
       '@commitlint/format': 18.4.0
       '@commitlint/lint': 18.4.0
-      '@commitlint/load': 18.4.1(typescript@5.2.2)
+      '@commitlint/load': 18.4.2(typescript@5.2.2)
       '@commitlint/read': 18.4.0
       '@commitlint/types': 18.4.0
       execa: 5.1.1
@@ -747,6 +747,7 @@ packages:
   /@commitlint/config-validator@18.4.0:
     resolution: {integrity: sha512-1y6qHMU3o4cYQSK+Y9EnmH6H1GRiwQGjnLIUOIKlekrmfc8MrMk1ByNmb8od4vK3qHJAaL/77/5n+1uyyIF5dA==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dependencies:
       '@commitlint/types': 18.4.0
       ajv: 8.12.0
@@ -767,6 +768,7 @@ packages:
   /@commitlint/execute-rule@18.4.0:
     resolution: {integrity: sha512-g013SWki6ZWhURBLOSXTaVQGWHdA0QlPJGiW4a+YpThezmJOemvc4LiKVpn13AjSKQ40QnmBqpBrxujOaSo+3A==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dev: true
 
   /@commitlint/format@18.4.0:
@@ -795,8 +797,8 @@ packages:
       '@commitlint/types': 18.4.0
     dev: true
 
-  /@commitlint/load@18.4.1(typescript@5.2.2):
-    resolution: {integrity: sha512-o/plBiPJQgbSq/4ipDpsq4HCmURjBAEjr1EO/p2falr3VhwV0WGXTvb8NlihgI8xtSyO6lHvtycrE535GMLQbA==}
+  /@commitlint/load@18.4.2(typescript@5.2.2):
+    resolution: {integrity: sha512-CKmzXdF9XwZJoVijAqpUlV9qzZOkyiYni4KuSCtTZVAAVudi9H84cJ4FqZxSwEP9G21vmoJiNrW8G042AsduVg==}
     engines: {node: '>=v18'}
     dependencies:
       '@commitlint/config-validator': 18.4.0
@@ -843,6 +845,7 @@ packages:
   /@commitlint/resolve-extends@18.4.0:
     resolution: {integrity: sha512-qhgU6ach+S6sJMD9NjCYiEycOObGhxzWQLQzqlScJCv9zkPs15Bg0ffLXTQ3z7ipXv46XEKYMnSJzjLRw2Tlkg==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dependencies:
       '@commitlint/config-validator': 18.4.0
       '@commitlint/types': 18.4.0
@@ -1954,6 +1957,7 @@ packages:
 
   /@types/node@18.18.9:
     resolution: {integrity: sha512-0f5klcuImLnG4Qreu9hPj/rEfFq6YRc5n2mAjSsH+ec/mJL+3voBH0+8T7o8RpFjH7ovc+TRsL/c7OYIQsPTfQ==}
+    requiresBuild: true
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -3196,6 +3200,7 @@ packages:
   /cosmiconfig-typescript-loader@5.0.0(@types/node@18.18.9)(cosmiconfig@8.3.6)(typescript@5.2.2):
     resolution: {integrity: sha512-+8cK7jRAReYkMwMiG+bxhcNKiHJDM6bR9FD/nGBXOWdMLuYawjF5cGrtLilJ+LGd3ZjCXnJjR5DkfWPoIVlqJA==}
     engines: {node: '>=v16'}
+    requiresBuild: true
     peerDependencies:
       '@types/node': '*'
       cosmiconfig: '>=8.2'
@@ -3530,7 +3535,7 @@ packages:
       longest: 2.0.1
       word-wrap: 1.2.5
     optionalDependencies:
-      '@commitlint/load': 18.4.1(typescript@5.2.2)
+      '@commitlint/load': 18.4.2(typescript@5.2.2)
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -5627,6 +5632,7 @@ packages:
   /jiti@1.21.0:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
     hasBin: true
+    requiresBuild: true
     dev: true
 
   /js-beautify@1.14.9:
@@ -5927,6 +5933,7 @@ packages:
 
   /lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
+    requiresBuild: true
     dev: true
 
   /lodash.kebabcase@4.1.1:
@@ -5947,6 +5954,7 @@ packages:
 
   /lodash.mergewith@4.6.2:
     resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
+    requiresBuild: true
     dev: true
 
   /lodash.pick@4.4.0:
