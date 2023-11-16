@@ -18,7 +18,7 @@ const FileSystemTreeSelect = /* #__PURE__ */ defineComponent({
   inheritAttrs: false,
   props: {
     modelValue: {
-      type: FileSystemFileHandle as PropType<FileSystemFileHandle | null>,
+      type: [FileSystemFileHandle, null] as PropType<FileSystemFileHandle | null>,
       required: true,
     },
   },
@@ -40,37 +40,40 @@ const FileSystemTreeSelect = /* #__PURE__ */ defineComponent({
     const files = ref<Data[]>([])
 
     const loadFile = async (): Promise<void> => {
-      if (!isSupported) {
-        console.error('Current Browser does not support for File System Access API')
-      }
-
-      const traverse = async (handle: FileSystemDirectoryHandle): Promise<Data> => {
-        const children: Data[] = []
-
+      const traverse = async (files: Data[], handle: FileSystemDirectoryHandle): Promise<void> => {
         // @ts-expect-error - File System Access API
-        for await (const [, value] of handle) {
+        for await (const [key, value] of handle.entries()) {
+          console.log(key, value)
           if (value.kind === 'directory') {
-            children.push(await traverse(value as FileSystemDirectoryHandle))
+            files.push({
+              label: key,
+              value: value as FileSystemDirectoryHandle,
+              children: [],
+            })
+            // @ts-expect-error - resolve way
+            await traverse(files.find((v) => v.label === key).children, value)
           }
           if (value.kind === 'file') {
-            children.push({
-              label: value.name,
+            files.push({
+              label: key,
               value: value as FileSystemFileHandle,
             })
           }
-        }
-
-        return {
-          label: handle.name,
-          value: handle,
-          children,
         }
       }
 
       // @ts-expect-error - File System Access API
       const handle = await window.showDirectoryPicker()
 
-      files.value.push(await traverse(handle))
+      void traverse(files.value, handle)
+    }
+
+    let loaded = false
+
+    const handleVisibleChange = (visible: boolean): void => {
+      if (visible && !loaded) {
+        void loadFile().then(() => (loaded = true))
+      }
     }
 
     expose({
@@ -82,7 +85,7 @@ const FileSystemTreeSelect = /* #__PURE__ */ defineComponent({
 
     return () => (
       <>
-        <ElTreeSelect modelValue={file} onUpdate:modelValue={(value: FileSystemFileHandle) => (file.value = value)} disabled={!isSupported} valueKey="name" onVisibleChange={loadFile} />
+        <ElTreeSelect modelValue={file} data={files.value} onUpdate:modelValue={(value: FileSystemFileHandle) => (file.value = value)} disabled={!isSupported} valueKey="name" onVisibleChange={handleVisibleChange} />
       </>
     )
   },
