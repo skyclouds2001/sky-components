@@ -49,12 +49,6 @@ export default defineConfig({
       minimize: true,
       plugins: [autoprefixer()],
     }),
-    visualizer({
-      filename: 'report.html',
-      title: 'report',
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    visualizer(),
   ],
 })
