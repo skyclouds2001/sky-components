@@ -1,23 +1,11 @@
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import checker from 'vite-plugin-checker'
+import fs from 'node:fs'
 import path from 'node:path'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueJsx(),
-    checker({
-      vueTsc: true,
-      eslint: {
-        lintCommand: 'eslint "**/*.{js,jsx,ts,tsx,vue}"',
-      },
-      stylelint: {
-        lintCommand: 'stylelint "**/*.{vue,css,scss}"',
-      },
-    }),
-  ],
+  plugins: [vue(), vueJsx()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '..', 'src'),
@@ -25,5 +13,19 @@ export default defineConfig({
   },
   css: {
     devSourcemap: true,
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    strictPort: true,
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, './../../../frontend/serve/localhost+1-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, './../../../frontend/serve/localhost+1.pem')),
+    },
+    open: true,
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp',
+    },
   },
 })
