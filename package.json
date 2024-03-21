@@ -120,7 +120,7 @@
     "rimraf": "^5.0.5",
     "rollup": "^4.6.1",
     "rollup-plugin-postcss": "^4.0.2",
-    "sass": "^1.69.5",
+    "sass": "^1.72.0",
     "stylelint": "^15.11.0",
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-recess-order": "^4.4.0",
